@@ -17,7 +17,7 @@ export function Showroom() {
 
     async function fetchShowroom() {
       try {
-        const response = await fetch("https://backend-spring-render.onrender.com/api/vehiculos")
+        const response = await fetch("https://backend-spring-render.onrender.com/api/vehiculos/showroom")
         if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
 
         const result = await response.json()
