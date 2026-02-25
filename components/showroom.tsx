@@ -161,3 +161,4 @@ export function Showroom() {
     </section>
   )
 }
+// Update: 2026-02-25 - ClassBenz v1.1
