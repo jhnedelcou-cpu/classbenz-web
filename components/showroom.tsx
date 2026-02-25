@@ -22,17 +22,13 @@ export function Showroom() {
 
         const result = await response.json()
 
+        // 🎯 CORRECCIÓN DE ESTRUCTURA: Accedemos a result.data.content
         let rawData = [];
-        if (result.success && result.data) {
-          // Normalizamos la data: si es un objeto único (como tu ejemplo), lo convertimos en array
-          if (Array.isArray(result.data)) {
-            rawData = result.data;
-          } else {
-            rawData = [result.data];
-          }
+        if (result.success && result.data && result.data.content) {
+          rawData = result.data.content;
         }
 
-        // 🎯 FILTRO ESTRICTO: Solo publicados (Regla de negocio)
+        // 🎯 FILTRO: Solo los que tienen published: true
         const publicables = rawData.filter((v: any) => v.published === true);
 
         const mappedData = publicables.map((v: any, index: number) => {
@@ -42,18 +38,20 @@ export function Showroom() {
             id: v.patente || `v-${index}`,
             model: v.modelo,
             year: v.anio,
+            // Manejo de kilometraje 0 o nulo
             km: v.ultimoKilometraje !== null ? Math.floor(v.ultimoKilometraje).toLocaleString('es-AR') : "0",
 
-            // 🏷️ REGLA: Si no hay precio, "Consultar" en NARANJA
+            // 🏷️ REGLA: "Consultar" en NARANJA si no hay precio
             price: (numericPrice && numericPrice > 0)
               ? `USD ${Math.floor(numericPrice).toLocaleString('es-AR')}`
               : <span className="text-orange-500 font-bold" suppressHydrationWarning>Consultar</span>,
 
             image: v.fotos && v.fotos.length > 0 ? v.fotos[0] : "/placeholder.svg",
             images: v.fotos || [],
-            category: v.category || "Sedán",
+            // Normalizamos categoría: "Sedan" -> "Sedán"
+            category: v.category === "Sedan" ? "Sedán" : (v.category || "Sedán"),
 
-            // Estados de reserva y venta
+            // Captura de estados desde tu JSON
             isReserved: v.isReserved === true || v.reservedValue === true,
             isSold: v.isSold === true || v.soldValue === true,
             isConsignment: v.isConsignment === true,
@@ -61,6 +59,7 @@ export function Showroom() {
             daysInStock: v.daysInStock || 0
           };
         });
+
         setVehicles(mappedData);
       } catch (error) {
         console.error("Error cargando inventario Class Benz:", error);
@@ -95,6 +94,7 @@ export function Showroom() {
             <h2 className="font-serif text-3xl lg:text-4xl font-semibold text-foreground">Inventario Seleccionado</h2>
           </div>
 
+          {/* Widget de Urgencia: Fuego Rojo y texto "7 dias" */}
           <div className="flex items-center gap-4 bg-white/5 backdrop-blur-md border border-[hsl(175,100%,33%)]/20 rounded-sm px-4 py-2.5 relative overflow-hidden group w-full sm:w-fit">
             <div className="absolute top-0 left-0 w-[2px] h-full bg-[hsl(175,100%,33%)] shadow-[0_0_10px_rgba(0,163,153,0.5)]" />
 
@@ -150,7 +150,7 @@ export function Showroom() {
           </div>
         )}
 
-        {/* Nota de Presupuesto */}
+        {/* Nota de Presupuesto: "presupuesto" en NARANJA */}
         <div className="mt-16 text-center p-8 bg-secondary/20 rounded-2xl border border-dashed border-border">
           <p className="text-muted-foreground text-sm">
             Todas las unidades ClassBenz cuentan con garantía técnica.
