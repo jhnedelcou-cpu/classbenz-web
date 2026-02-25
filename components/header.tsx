@@ -87,7 +87,7 @@ export function Header() {
               className="hidden xl:flex items-center gap-2 text-xs font-medium text-muted-foreground hover:text-white transition-all duration-300 group"
             >
               <Phone className="w-3.5 h-3.5 text-slate-400 group-hover:text-white transition-colors" />
-              <span className="tracking-tight">+54 9 11 0000-0000</span>
+              <span className="tracking-tight">+54 9 11 5412-2154</span>
             </a>
 
             <Button
