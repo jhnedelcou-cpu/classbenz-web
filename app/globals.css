@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* 🏷️ Clase para resaltados en Verde Metalizado */
+  .text-presupuesto {
+    color: hsl(var(--f1-mercedes)) !important;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+}
+
+@layer base {
+  :root {
+    /* --- PALETA AMG PERFORMANCE DARK METALLIC --- */
+    --background: 0 0% 4%;
+    --foreground: 0 0% 95%;
+
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 95%;
+
+    --primary: 0 0% 90%;
+    --primary-foreground: 0 0% 5%;
+
+    /* 🏎️ F1 PETRONAS DARK METALLIC */
+    --f1-mercedes: 175 100% 33%;
+    --f1-glow: 175 100% 45%;
+
+    --accent: 175 100% 33%;
+    --accent-foreground: 0 0% 100%;
+
+    --color-presupuesto: 175 40% 20%;
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 90%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 15%;
+    --input: 0 0% 10%;
+    --ring: 175 100% 33%;
+
+    --radius: 0.15rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground transition-colors duration-500;
+  }
+}
+
+@layer components {
+
+  /* 🏎️ LÍNEA DE SEPARACIÓN TÉCNICA */
+  .separator-f1 {
+    @apply h-[1px] w-full;
+    background: linear-gradient(90deg, transparent, hsl(var(--f1-mercedes) / 0.8), transparent);
+  }
+
+  /* 💎 BOTÓN GLASS-AMG (ULTRA MODERNO) */
+  .btn-modern-amg {
+    @apply relative overflow-hidden transition-all duration-500 rounded-sm backdrop-blur-md;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0.6) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* Efecto escáner de luz al hacer hover */
+  .btn-modern-amg::after {
+    content: '';
+    @apply absolute inset-0 -translate-x-full;
+    background: linear-gradient(90deg, transparent, hsl(var(--f1-glow) / 0.2), transparent);
+    transition: transform 0.8s ease;
+  }
+
+  .btn-modern-amg:hover::after {
+    @apply translate-x-full;
+  }
+
+  .btn-modern-amg:hover {
+    @apply -translate-y-0.5;
+    border-color: hsl(var(--f1-mercedes) / 0.5);
+    box-shadow: 0 0 30px -10px hsl(var(--f1-glow) / 0.4);
+  }
+}

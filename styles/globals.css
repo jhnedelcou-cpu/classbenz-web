@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* 🏷️ Clase Maestra para Presupuesto (Dorado/Bronce) */
+  .text-presupuesto {
+    color: hsl(var(--color-presupuesto)) !important;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+
+    /* 🎯 CAMBIO CLAVE: Accent ahora es el Bronce Mercedes */
+    --accent: 35 75% 40%;
+    --accent-foreground: 0 0% 100%;
+    /* Texto blanco sobre el bronce */
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 35 75% 40%;
+    --radius: 0.1rem;
+    /* Estética técnica Mercedes */
+
+    /* Sincronizamos la variable de presupuesto */
+    --color-presupuesto: 35 75% 40%;
+  }
+
+  .dark {
+    --background: 0 0% 0%;
+    /* Negro Absoluto Mercedes */
+    --foreground: 0 0% 98%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 63.9%;
+
+    /* Dorado brillante para modo oscuro */
+    --accent: 45 70% 60%;
+    --accent-foreground: 0 0% 0%;
+    /* Texto negro sobre dorado brillante */
+
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 45 70% 60%;
+
+    --color-presupuesto: 45 70% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground transition-colors duration-500;
+  }
+
+  /* 🛠️ Fix para botones: Aseguramos que el hover no vuelva al naranja */
+  .bg-accent:hover {
+    filter: brightness(1.1);
+  }
+}
+
+/* -----------------------------------------------------------
+   ELIMINADOR DE NARANJA - CLASS BENZ 
+   ----------------------------------------------------------- */
+
+/* 1. Forzamos que la variable accent sea Bronce y NO naranja */
+:root {
+  --accent: 35 75% 40% !important;
+  --accent-foreground: 0 0% 100% !important;
+}
+
+.dark {
+  --accent: 45 70% 60% !important;
+  --accent-foreground: 0 0% 0% !important;
+}
+
+/* 2. Si hay botones que usan clases directas de Tailwind naranja, las pisamos aquí */
+button.bg-orange-600,
+button.bg-accent,
+.bg-orange-500,
+.text-orange-600 {
+  background-color: hsl(var(--color-presupuesto)) !important;
+  color: white !important;
+}
+
+/* 3. El icono de fuego DEBE ser rojo por regla de negocio */
+.text-red-600,
+.lucide-flame {
+  color: #dc2626 !important;
+}
