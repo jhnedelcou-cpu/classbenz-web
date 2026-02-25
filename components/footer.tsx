@@ -20,7 +20,7 @@ export function Footer() {
               El destino exclusivo para vehículos Mercedes-Benz en Argentina.
               Venta, reparación y consignación.
             </p>
-            {/* Redes Sociales Agregadas aquí */}
+            {/* Redes Sociales */}
             <div className="flex gap-4">
               <a href="#" className="w-9 h-9 rounded-full bg-secondary border border-border flex items-center justify-center text-muted-foreground hover:text-accent hover:border-accent transition-all">
                 <Instagram className="w-4 h-4" />
@@ -57,7 +57,8 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-accent shrink-0" />
-                <a href="tel:+5491100000000" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                {/* Teléfono actualizado también en el texto */}
+                <a href="tel:+5491154122154" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   +54 9 11 5412-2154
                 </a>
               </li>
@@ -96,9 +97,10 @@ export function Footer() {
           </div>
         </div>
       </div>
-      {/* Botón Flotante WhatsApp Premium Style */}
+
+      {/* Botón Flotante WhatsApp Premium Style - TELÉFONO ACTUALIZADO */}
       <a
-        href="https://wa.me/5491100000000?text=Hola%20Class%20Benz!%20Quisiera%20consultar%20por%20un%20vehículo."
+        href="https://wa.me/5491154122154?text=Hola%20Class%20Benz!%20Quisiera%20consultar%20por%20un%20vehículo."
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 p-4 rounded-full 
@@ -107,7 +109,6 @@ export function Footer() {
              hover:bg-white/20 hover:border-white/40 
              hover:scale-110 transition-all duration-300 group"
       >
-        {/* El logo de WhatsApp ahora es "Plateado/Blanco" con brillo */}
         <svg
           viewBox="0 0 24 24"
           className="w-7 h-7 fill-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]"
