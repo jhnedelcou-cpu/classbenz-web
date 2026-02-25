@@ -24,16 +24,15 @@ export function Showroom() {
 
         let rawData = [];
         if (result.success && result.data) {
-          if (Array.isArray(result.data) && result.data[0]?.content) {
-            rawData = result.data[0].content;
-          } else if (result.data.content) {
-            rawData = result.data.content;
-          } else if (Array.isArray(result.data)) {
-            rawData = result.data; // Caso NDO872 directo
+          // Normalizamos la data: si es un objeto único (como tu ejemplo), lo convertimos en array
+          if (Array.isArray(result.data)) {
+            rawData = result.data;
+          } else {
+            rawData = [result.data];
           }
         }
 
-        // 🎯 FILTRO ESTRICTO: Solo publicados
+        // 🎯 FILTRO ESTRICTO: Solo publicados (Regla de negocio)
         const publicables = rawData.filter((v: any) => v.published === true);
 
         const mappedData = publicables.map((v: any, index: number) => {
@@ -43,18 +42,18 @@ export function Showroom() {
             id: v.patente || `v-${index}`,
             model: v.modelo,
             year: v.anio,
-            km: v.ultimoKilometraje ? Math.floor(v.ultimoKilometraje).toLocaleString('es-AR') : "0",
+            km: v.ultimoKilometraje !== null ? Math.floor(v.ultimoKilometraje).toLocaleString('es-AR') : "0",
 
-            // 🏷️ PRECIO
+            // 🏷️ REGLA: Si no hay precio, "Consultar" en NARANJA
             price: (numericPrice && numericPrice > 0)
               ? `USD ${Math.floor(numericPrice).toLocaleString('es-AR')}`
-              : <span className="text-presupuesto" suppressHydrationWarning>Consultar</span>,
+              : <span className="text-orange-500 font-bold" suppressHydrationWarning>Consultar</span>,
 
             image: v.fotos && v.fotos.length > 0 ? v.fotos[0] : "/placeholder.svg",
             images: v.fotos || [],
             category: v.category || "Sedán",
 
-            // 🏎️ CORRECCIÓN: Capturamos los estados de reserva y venta del JSON
+            // Estados de reserva y venta
             isReserved: v.isReserved === true || v.reservedValue === true,
             isSold: v.isSold === true || v.soldValue === true,
             isConsignment: v.isConsignment === true,
@@ -138,7 +137,7 @@ export function Showroom() {
 
         {/* Grid de Vehículos */}
         {loading ? (
-          <div className="text-center py-20 text-orange-600 animate-pulse font-bold">Sincronizando...</div>
+          <div className="text-center py-20 text-orange-600 animate-pulse font-bold uppercase tracking-widest">Sincronizando Inventario...</div>
         ) : filteredVehicles.length === 0 ? (
           <div className="text-center py-20 border-2 border-dashed border-muted rounded-xl">
             <p className="text-muted-foreground italic">No hay vehículos marcados para "Publicar en Web".</p>
@@ -155,7 +154,7 @@ export function Showroom() {
         <div className="mt-16 text-center p-8 bg-secondary/20 rounded-2xl border border-dashed border-border">
           <p className="text-muted-foreground text-sm">
             Todas las unidades ClassBenz cuentan con garantía técnica.
-            Consulte su <span className="text-presupuesto underline decoration-current underline-offset-4">presupuesto</span> personalizado hoy mismo.
+            Consulte su <span className="text-orange-500 font-bold underline decoration-current underline-offset-4">presupuesto</span> personalizado hoy mismo.
           </p>
         </div>
       </div>
