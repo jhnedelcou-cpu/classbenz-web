@@ -11,6 +11,7 @@ import Zoom from "yet-another-react-lightbox/plugins/zoom"
 interface VehicleCardProps {
   vehicle: {
     id: number | string
+    marca?: string // Añadido para mayor precisión
     model: string
     year: number
     km: number | string
@@ -34,6 +35,28 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
   const mainImage = galeriaFotos.length > 0 ? galeriaFotos[0] : (vehicle.image || "/placeholder.svg");
   const slides = galeriaFotos.length > 0 ? galeriaFotos.map((src) => ({ src })) : [{ src: mainImage }];
 
+  // --- LÓGICA DE NAVEGACIÓN Y SELECCIÓN ---
+  const handleConsultar = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    const marca = vehicle.marca || "Class Benz";
+    const nombreCompleto = `${marca} ${vehicle.model} (${vehicle.year})`;
+
+    // 1. Actualizamos la URL visualmente
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set("vehiculo", nombreCompleto);
+    const newPath = `${window.location.pathname}?${searchParams.toString()}#contacto`;
+    window.history.pushState({}, '', newPath);
+
+    // 2. DISPARAMOS UN EVENTO PERSONALIZADO
+    const event = new CustomEvent("vehiculoSeleccionado", { detail: nombreCompleto });
+    window.dispatchEvent(event);
+
+    // 3. Scroll suave
+    const el = document.getElementById('contacto');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <>
       <div
@@ -52,63 +75,41 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
               }`}
           />
 
-          {/* 🏁 OVERLAY VENDIDO - ESTILO TELEMETRÍA AMG (FUTURISTA) */}
+          {/* 🏁 OVERLAY VENDIDO */}
           {vehicle.isSold && (
             <div className="absolute inset-0 z-40 flex items-center justify-center p-4 overflow-hidden pointer-events-none">
-              {/* Fondo oscuro con desenfoque de cristal líquido */}
               <div className="absolute inset-0 bg-black/50 backdrop-blur-[4px]" />
-
-              {/* El Marco de Telemetría */}
               <div className="relative w-full max-w-[85%] aspect-[4/1] flex items-center justify-center rotate-[-12deg]">
-
-                {/* Bordes de Neón Estilo Scanner */}
                 <div className="absolute inset-0 border-x-2 border-[hsl(175,100%,45%)]/60 rounded-sm">
                   <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[hsl(175,100%,45%)]/50 to-transparent" />
                   <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[hsl(175,100%,45%)]/50 to-transparent" />
                 </div>
-
-                {/* Decoraciones de Esquinas Técnicas */}
                 <div className="absolute -top-1 -left-1 w-3 h-3 border-t-2 border-l-2 border-[hsl(175,100%,45%)]" />
                 <div className="absolute -bottom-1 -right-1 w-3 h-3 border-b-2 border-r-2 border-[hsl(175,100%,45%)]" />
-
-                {/* Fondo de la placa con barrido de datos sutil */}
                 <div className="absolute inset-0 bg-[hsl(175,100%,33%)]/[0.07] backdrop-blur-md" />
-
-                {/* Texto con espaciado de precisión */}
                 <span className="relative z-10 font-sans text-3xl font-black text-white uppercase tracking-[0.4em] italic leading-none drop-shadow-[0_0_15px_rgba(0,255,237,0.4)]">
                   Vendido
                 </span>
-
-                {/* Micro-textos decorativos (Estilo Pantalla de Competición) */}
-                <div className="absolute top-2 right-4 text-[7px] text-[hsl(175,100%,45%)] font-mono uppercase tracking-tighter opacity-70">
-                  Status: Finalized
-                </div>
-                <div className="absolute bottom-2 left-4 text-[7px] text-[hsl(175,100%,45%)] font-mono uppercase tracking-tighter opacity-70">
-                  Unit: Out of Stock
-                </div>
               </div>
             </div>
           )}
-          {/* 🏎️ BADGE RESERVADO (Abajo a la izquierda) */}
+
+          {/* 🏎️ BADGE RESERVADO */}
           {!vehicle.isSold && vehicle.isReserved && (
             <div className="absolute bottom-3 left-3 z-30">
-              <Badge
-                className="bg-black/80 text-white border border-[hsl(175,100%,25%)] text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 shadow-2xl backdrop-blur-md flex gap-2 items-center"
-              >
+              <Badge className="bg-black/80 text-white border border-[hsl(175,100%,25%)] text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 shadow-2xl backdrop-blur-md flex gap-2 items-center">
                 <div className="w-1.5 h-1.5 rounded-full bg-[hsl(175,100%,45%)] animate-pulse shadow-[0_0_8px_#00ffed]" />
                 Reservado
               </Badge>
             </div>
           )}
 
-          {/* 🏷️ BADGES SUPERIORES (Izquierda) */}
+          {/* 🏷️ BADGES SUPERIORES */}
           <div className="absolute top-3 left-3 flex flex-col gap-2 z-20">
-            {/* Categoría */}
             <Badge className="bg-[hsl(175,100%,22%)] text-white text-[10px] uppercase font-bold border-none shadow-md w-fit">
               {vehicle.category}
             </Badge>
 
-            {/* 🔥 Stock: Fuego Rojo + 'dias' */}
             {vehicle.daysInStock !== undefined && vehicle.daysInStock > 0 && (
               <Badge className="bg-[hsl(175,100%,18%)] text-red-500 border border-[hsl(175,100%,28%)] text-[10px] font-bold w-fit flex gap-1 items-center shadow-lg px-2 py-0.5">
                 <span className="animate-pulse">🔥</span>
@@ -116,7 +117,6 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
               </Badge>
             )}
 
-            {/* ✅ Service Oficial */}
             {vehicle.hasServiceDone && (
               <Badge className="bg-emerald-800/40 text-white border border-emerald-500/30 text-[10px] font-bold w-fit flex gap-1 items-center shadow-lg">
                 <span>✓</span> Service Oficial
@@ -139,27 +139,20 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
           </div>
 
           <div className="flex flex-col gap-4 pt-4 border-t border-border/30">
-            <div className="flex items-end justify-between">
-              <div>
-                <p className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground/50 mb-1 font-medium">
-                  Inversión Final
-                </p>
-                <p className="text-2xl font-semibold leading-none tracking-tight text-emerald-900/80 dark:text-emerald-500/70">
-                  <span className="text-xs mr-1 font-normal opacity-40">$</span>
-                  {vehicle.price}
-                </p>
-              </div>
+            <div>
+              <p className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground/50 mb-1 font-medium">
+                Inversión Final
+              </p>
+              <p className="text-2xl font-semibold leading-none tracking-tight text-emerald-900/80 dark:text-emerald-500/70">
+                <span className="text-xs mr-1 font-normal opacity-40">$</span>
+                {vehicle.price}
+              </p>
             </div>
 
             <Button
               disabled={vehicle.isSold}
-              onClick={(e) => {
-                e.stopPropagation();
-                const el = document.getElementById('contacto');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className={`btn-modern-amg group w-full h-11 px-6 text-[10px] font-bold uppercase tracking-[0.2em] text-white border-none relative overflow-hidden ${vehicle.isSold ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
+              onClick={handleConsultar}
+              className={`btn-modern-amg group w-full h-11 px-6 text-[10px] font-bold uppercase tracking-[0.2em] text-white border-none relative overflow-hidden ${vehicle.isSold ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <span className="relative z-10 flex items-center justify-center gap-2 group-hover:text-[hsl(175,100%,45%)] transition-colors duration-300">
                 {vehicle.isSold ? "Unidad Vendida" : "Consultar Unidad"}

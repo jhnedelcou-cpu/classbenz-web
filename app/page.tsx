@@ -39,10 +39,15 @@ export default function Page() {
               {/* Map Container */}
               <div className="group relative aspect-video bg-secondary rounded-sm border-2 border-double border-[hsl(var(--color-presupuesto)/0.3)] overflow-hidden shadow-2xl">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3278.472852274431!2d-58.824555!3d-34.780111!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDQ2JzQ4LjQiUyA1OMKwNDknMjguNCJX!5e0!3m2!1spt!2sar!4v1700000000000!5m2!1spt!2sar"
+                  // URL Actualizada con la ubicación exacta: Ruta 40 y Leavy, Marcos Paz
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3278.204557929452!2d-58.84583322425345!3d-34.7505555729016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bc7289c1351bab%3A0x4bc4d7543b318cb6!2sRuta%20Provincial%2040%20%26%20Leavy%2C%20Marcos%20Paz%2C%20Provincia%20de%20Buenos%20Aires!5e0!3m2!1ses-419!2sar!4v1708970000000!5m2!1ses-419!2sar"
                   width="100%"
                   height="100%"
-                  style={{ border: 0, filter: 'grayscale(1) contrast(1.2) invert(0.9)' }}
+                  style={{
+                    border: 0,
+                    filter: 'grayscale(1) contrast(1.2) invert(0.9)',
+                    pointerEvents: 'auto' // Asegura que el usuario pueda interactuar con el mapa
+                  }}
                   allowFullScreen
                   loading="lazy"
                   title="Class Benz: Ruta 40 y Leavy, Marcos Paz"
