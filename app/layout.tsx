@@ -3,6 +3,8 @@ import type { Metadata, Viewport } from "next"
 import { Inter, Playfair_Display } from "next/font/google"
 
 import "./globals.css"
+// 1. IMPORTACIÓN DEL ASISTENTE
+import { ChatAssistant } from "@/components/chat-assistant"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,7 +33,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased`}>{children}</body>
+      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-[#0d0d0d]`}>
+        {/* El contenido de la página */}
+        {children}
+
+        {/* 2. INTEGRACIÓN DEL CHATBOT */}
+        {/* Se coloca aquí para que flote sobre cualquier página del sitio */}
+        <ChatAssistant />
+      </body>
     </html>
   )
 }
