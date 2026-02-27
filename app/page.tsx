@@ -33,7 +33,7 @@ export default function Page() {
                 Estamos para <span className="italic">asesorarlo</span>
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-8 max-w-md">
-                Visite o nosso showroom em Marcos Paz para uma experiência Mercedes-Benz completa.
+                Visite o nosso showroom em Marcos Paz para uma experiencia Mercedes-Benz completa.
               </p>
 
               {/* Map Container */}
