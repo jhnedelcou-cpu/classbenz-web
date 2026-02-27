@@ -95,14 +95,18 @@ export function ChatAssistant() {
     };
 
     return (
-        /* CAMBIO AQUÍ: right-6 mueve el chat mucho más al borde derecho */
-        <div className="fixed bottom-6 right-6 z-[100] font-sans">
-            <button onClick={() => setIsOpen(!isOpen)} className="w-16 h-16 rounded-full bg-black border border-[hsl(175,100%,25%)] flex items-center justify-center">
+        // CAMBIO: 'fixed' eliminado. Ahora es 'relative'.
+        <div className="relative font-sans">
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-16 h-16 rounded-full bg-black border border-[hsl(175,100%,25%)] flex items-center justify-center transition-transform hover:scale-105"
+            >
                 <MercedesStar className="text-[hsl(175,100%,45%)] w-9 h-9" />
             </button>
 
             {isOpen && (
-                <div className="absolute bottom-24 right-0 w-[350px] h-[520px] bg-black/95 border border-white/10 rounded-2xl overflow-hidden flex flex-col">
+                // La posición del chat sigue siendo absoluta respecto al botón, pero ahora está contenida.
+                <div className="absolute bottom-20 right-0 w-[350px] h-[520px] bg-black/95 border border-white/10 rounded-2xl overflow-hidden flex flex-col shadow-2xl z-[100]">
                     <div ref={scrollRef} className="flex-1 p-4 space-y-4 overflow-y-auto">
                         {messages.map((m, i) => (
                             <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
