@@ -66,15 +66,20 @@ export function Header() {
             </div>
           </div>
 
+
           {/* Nav Links */}
           <nav className="hidden lg:flex items-center gap-10">
-            {["Inventario", "Consignación", "Contacto"].map((item) => (
+            {[
+              { name: "Inventario", id: "contacto" },
+              { name: "Consignación", id: "contacto" }, // Ahora ambos apuntan a 'contacto'
+              { name: "Contacto", id: "contacto" }
+            ].map((item) => (
               <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
+                key={item.name}
+                href={`#${item.id}`}
                 className="group relative text-[11px] uppercase tracking-widest text-muted-foreground hover:text-white transition-all font-bold"
               >
-                {item}
+                {item.name}
                 <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-slate-400 transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
