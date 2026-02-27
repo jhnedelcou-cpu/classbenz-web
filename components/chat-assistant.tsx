@@ -123,4 +123,4 @@ export function ChatAssistant() {
             )}
         </div>
     )
-}
+}         
