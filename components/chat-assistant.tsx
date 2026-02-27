@@ -40,12 +40,10 @@ export function ChatAssistant() {
     const generateBotResponse = (userMessage: string) => {
         const msg = userMessage.toLowerCase();
 
-        // 1. PRIORIDAD ALTA: Intención de contacto
         if (msg.includes("vendedor") || msg.includes("asesor") || msg.includes("contacto") || msg.includes("hablar con")) {
             return `Mercedes: Entendido. Haz clic aquí para continuar la atención directamente con un asesor por WhatsApp: <br/><br/> <a href="${WHATSAPP_LINK}" target="_blank" rel="noopener noreferrer" style="color: #10B981; font-weight: bold; text-decoration: underline;">💬 Hablar con un asesor ahora</a>`;
         }
 
-        // 2. Buscar vehículo
         let vehicle = VEHICLE_DATA.find(v =>
             msg.includes(v.modelo.toLowerCase()) ||
             (v.patente && msg.includes(v.patente.toLowerCase()))
@@ -97,7 +95,8 @@ export function ChatAssistant() {
     };
 
     return (
-        <div className="fixed bottom-6 right-24 z-[100] font-sans">
+        /* CAMBIO AQUÍ: right-6 mueve el chat mucho más al borde derecho */
+        <div className="fixed bottom-6 right-6 z-[100] font-sans">
             <button onClick={() => setIsOpen(!isOpen)} className="w-16 h-16 rounded-full bg-black border border-[hsl(175,100%,25%)] flex items-center justify-center">
                 <MercedesStar className="text-[hsl(175,100%,45%)] w-9 h-9" />
             </button>
@@ -123,4 +122,4 @@ export function ChatAssistant() {
             )}
         </div>
     )
-}         
+}
