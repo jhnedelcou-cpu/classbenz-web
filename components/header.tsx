@@ -55,7 +55,7 @@ export function Header() {
           {/* Nav Links */}
           <nav className="hidden lg:flex items-center gap-10">
             {[
-              { name: "Inventario", id: "contacto" },
+              { name: "Inventario", id: "showroom" },
               { name: "Consignación", id: "contacto" },
               { name: "Contacto", id: "contacto" }
             ].map((item) => (
